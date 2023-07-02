@@ -1,7 +1,7 @@
 # libraries for webscraping, parsing and getting stock data
 from urllib.request import urlopen, Request
 from bs4 import BeautifulSoup
-from yahooquery import Ticker
+import yfinance as yf
 import time
 
 # for plotting and data manipulation
@@ -101,39 +101,31 @@ parsed_and_scored_news['date'] = pd.to_datetime(parsed_and_scored_news.date).dt.
 mean_scores = parsed_and_scored_news.groupby(['ticker']).mean()
 
 # Get Price, Sector and Industry of each Ticker
-symbols = ' '.join(tickers)
-
-tickers_data = Ticker(symbols)
+tickers_data = yf.Ticker(symbols)
 tickers_summary = tickers_data.summary_detail
 tickers_profile = tickers_data.asset_profile
 
 sectors = []
 industries = []
 prices = []
-
 for ticker in tickers:
     print(ticker)
+    tickerdata = yf.Ticker(ticker)
     prices.append(tickerdata.info['regularMarketPreviousClose'])
-    try:
-        sectors.append(tickers_profile[ticker]['sector'])
-    except:
-        sectors.append("Others")
-    try:
-        industries.append(tickers_profile[ticker]['industry'])
-    except:
-        industries.append("Others")
+    sectors.append(tickerdata.info['sector'])
+    industries.append(tickerdata.info['industry'])
 	
 # Combine the Information Above and the Corresponding Tickers into a DataFrame
-d = {'Symbol': tickers, 'Sector': sectors, 'Industry': industries, 'Prices': prices}
-# create dataframe from 
-df_info = pd.DataFrame(data=d)
+d = {'Sector': sectors, 'Industry': industries, 'Price': prices, 'No. of Shares': number_of_shares}
+# create dataframe from
+df_info = pd.DataFrame(data=d, index = tickers)
 
-# Get Names of Companies from the Dow Jones DataFrame obtained Earlier
-df_info_name = df_info.merge(df_dow_jones[['Company', 'Symbol']], on = 'Symbol')
+df_info['Total Stock Value in Portfolio'] = df_info['Price']*df_info['No. of Shares']
 
-# Join Stock Information and Sentiment Information
-df = mean_scores.merge(df_info_name, left_on = 'ticker', right_on = 'Symbol')
+df = mean_scores.join(df_info)
 df = df.rename(columns={"compound": "Sentiment Score", "neg": "Negative", "neu": "Neutral", "pos": "Positive"})
+df = df.reset_index()
+
 
 # Generate the Treemap Plot
 # group data into sectors at the highest level, breaks it down into industry, and then ticker, specified in the 'path' parameter
@@ -141,12 +133,13 @@ df = df.rename(columns={"compound": "Sentiment Score", "neg": "Negative", "neu":
 # the color of the chart follows the sentiment score
 # when the mouse is hovered over each box in the chart, the negative, neutral, positive and overall sentiment scores will all be shown
 # the color is red (#ff0000) for negative sentiment scores, black (#000000) for 0 sentiment score and green (#00FF00) for positive sentiment scores
-fig = px.treemap(df, path=[px.Constant("Dow Jones"), 'Sector', 'Industry', 'Symbol'], values='Prices',
-                  color='Sentiment Score', hover_data=['Company', 'Negative', 'Neutral', 'Positive', 'Sentiment Score'],
+
+fig = px.treemap(df, path=[px.Constant("Sectors"), 'Sector', 'Industry', 'ticker'], values='Total Stock Value in Portfolio',
+                  color='Sentiment Score', hover_data=['Price', 'Negative', 'Neutral', 'Positive', 'Sentiment Score'],
                   color_continuous_scale=['#FF0000', "#000000", '#00FF00'],
                   color_continuous_midpoint=0)
 
-fig.data[0].customdata = df[['Company', 'Negative', 'Neutral', 'Positive', 'Sentiment Score']].round(3) # round to 3 decimal places
+fig.data[0].customdata = df[['Price', 'Negative', 'Neutral', 'Positive', 'Sentiment Score']].round(3) # round to 3 decimal places
 fig.data[0].texttemplate = "%{label}<br>%{customdata[4]}"
 
 fig.update_traces(textposition="middle center")
