@@ -7,6 +7,7 @@ import time
 # for plotting and data manipulation
 import pandas as pd
 import matplotlib.pyplot as plt
+%matplotlib inline
 import plotly
 import plotly.express as px
 
@@ -14,9 +15,6 @@ import plotly.express as px
 import nltk
 nltk.downloader.download('vader_lexicon')
 from nltk.sentiment.vader import SentimentIntensityAnalyzer
-
-# for getting current date and time to print 'last updated'
-from datetime import datetime
 
 tickers_dict = {'AMZN': 5, 'TSLA': 1, 'GOOG': 3, 'META': 3, 'KO': 10, 'PEP': 5,  # amazon, tesla, google, meta, coke, pepsi
                 'BA': 5, 'XOM': 5, 'CVX': 4, 'UNH': 1, 'JNJ': 3, 'JPM': 3, # boeing, exxon mobil, chevron, united health, johnson&johnson, jp morgan
@@ -31,62 +29,58 @@ number_of_shares = tickers_dict.values()
 finwiz_url = 'https://finviz.com/quote.ashx?t='
 news_tables = {}
 
+##### Scrape the Date, Time and News Headlines Data
+finwiz_url = 'https://finviz.com/quote.ashx?t='
+news_tables = {}
+
 for ticker in tickers:
     url = finwiz_url + ticker
-    req = Request(url=url,headers = { "user-Agent": 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.116 Safari/537.36'})
-
-    try:       
-       response = urlopen(req)   
-    except:
-       time.sleep(10) # if there is an error and request is blocked, do it more slowly by waiting for 10 seconds before requesting again
-       response = urlopen(req)  
-        
+    req = Request(url=url,headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'})
+    response = urlopen(req)
     # Read the contents of the file into 'html'
-    html = BeautifulSoup(response, "html")
+    html = BeautifulSoup(response)
     # Find 'news-table' in the Soup and load it into 'news_table'
     news_table = html.find(id='news-table')
     # Add the table to our dictionary
-    news_tables[ticker] = news_table	
+    news_tables[ticker] = news_table
+    # Add a delay of 1 second before the next request
+    time.sleep(1)	
 
-# Parse the Date, Time and News Headlines into a Python List
+##### Parse the Date, Time and News Headlines into a Python List
 parsed_news = []
 # Iterate through the news
 for file_name, news_table in news_tables.items():
-	# Iterate through all tr tags in 'news_table'
-	for x in news_table.findAll('tr'):
-		# occasionally x (below) may be None when the html table is poorly formatted, skip it in try except instead of throwing an error and exiting
-		# may also use an if loop here to check if x is None first
-		try: 
-			# read the text from each tr tag into text
-			# get text from a only
-			text = x.a.get_text() 
-			# splite text in the td tag into a list 
-			date_scrape = x.td.text.split()
-			# if the length of 'date_scrape' is 1, load 'time' as the only element
-			if len(date_scrape) == 1:
-				time = date_scrape[0]
+    # Iterate through all tr tags in 'news_table'
+    #print(news_table)
+    for x in news_table.findAll('tr'):
+        # read the text from each tr tag into text
+        # get text from a only
+        if x.a:
+          text = x.a.get_text()
+          # splite text in the td tag into a list
+          date_scrape = x.td.text.split()
+          # if the length of 'date_scrape' is 1, load 'time' as the only element
+          if len(date_scrape) == 1:
+              time = date_scrape[0]
 
-			# else load 'date' as the 1st element and 'time' as the second    
-			else:
-				date = date_scrape[0]
-				time = date_scrape[1]
-			# Extract the ticker from the file name, get the string up to the 1st '_'  
-			ticker = file_name.split('_')[0]
-			print(ticker)
+          # else load 'date' as the 1st element and 'time' as the second
+          else:
+              date = date_scrape[0]
+              time = date_scrape[1]
+          # Extract the ticker from the file name, get the string up to the 1st '_'
+          ticker = file_name.split('_')[0]
 
-			# Append ticker, date, time and headline as a list to the 'parsed_news' list
-			parsed_news.append([ticker, date, time, text])
-		except Exception as e:
-			print(e)
-
-# Perform Sentiment Analysis with Vader
-# Instantiate the sentiment intensity analyzer
-vader = SentimentIntensityAnalyzer()
+          # Append ticker, date, time and headline as a list to the 'parsed_news' list
+          parsed_news.append([ticker, date, time, text])
+		
 # Set column names
 columns = ['ticker', 'date', 'time', 'headline']
 # Convert the parsed_news list into a DataFrame called 'parsed_and_scored_news'
 parsed_and_scored_news = pd.DataFrame(parsed_news, columns=columns)
 
+##### Perform Sentiment Analysis with Vader
+# Instantiate the sentiment intensity analyzer
+vader = SentimentIntensityAnalyzer()
 # Iterate through the headlines and get the polarity scores using vader
 scores = parsed_and_scored_news['headline'].apply(vader.polarity_scores).tolist()
 # Convert the 'scores' list of dicts into a DataFrame
@@ -115,7 +109,7 @@ for ticker in tickers:
     sectors.append(tickerdata.info['sector'])
     industries.append(tickerdata.info['industry'])
 	
-# Combine the Information Above and the Corresponding Tickers into a DataFrame
+# dictionary {'column name': list of values for column} to be converted to dataframe
 d = {'Sector': sectors, 'Industry': industries, 'Price': prices, 'No. of Shares': number_of_shares}
 # create dataframe from
 df_info = pd.DataFrame(data=d, index = tickers)
