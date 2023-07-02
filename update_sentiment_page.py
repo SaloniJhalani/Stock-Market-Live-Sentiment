@@ -7,7 +7,6 @@ import time
 # for plotting and data manipulation
 import pandas as pd
 import matplotlib.pyplot as plt
-%matplotlib inline
 import plotly
 import plotly.express as px
 
