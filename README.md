@@ -1,6 +1,6 @@
 # Stock Market Live Sentiment 
 
-![Image Description](img/food-delivery.png)
+![Image Description](img/SentimentAnalysis.png)
 
 ## Table of Contents
 - [Project Overview](#project-overview)
