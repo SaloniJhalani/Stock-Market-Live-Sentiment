@@ -1,4 +1,4 @@
-# Stock Market Live Sentiment 
+# Stock Market Live Sentiment Dashboard
 
 ![Image Description](img/SentimentAnalysis.png)
 
@@ -41,16 +41,15 @@ A web-based demonstration of the live stock market sentiment can be accessed fro
 
 ## Steps Followed
 
-1. Data Collection: Gathered the food delivery dataset from the provided data source.
-2. Data Preprocessing: Performed data cleaning to handle missing values, outliers, and inconsistencies in the dataset. Conducted feature engineering to extract relevant features for the prediction model.
-3. Model Development: Utilized regression algorithms to train a food delivery time prediction model. Explored different models such as linear regression, decision trees, random forests, xgboost to identify the best-performing model.
-4. Model Evaluation: Evaluated the performance of the models using appropriate metrics such as mean squared error (MSE),root mean squared error (RMSE) and R2 score.
-5. Deployment: Deployed the food delivery time prediction model as a standalone application for real-time predictions.
-
+1. Data Collection: The project collects stock news from FinViz and retrieves stock information using the yfinance library in Python.
+2. Sentiment Analysis: The collected stock news undergoes sentiment analysis using the Vader sentiment analysis tool. This analysis helps determine the sentiment associated with each news article, whether positive, negative, or neutral.
+3. Data Visualization: The project utilizes the plotly library to generate data visualizations. These visualizations present the analyzed stock sentiment data in an easily understandable and visually appealing format.
+4. Deployment: The project is deployed using GitHub Actions and Pages. This allows for the creation of a live Stock Sentiment Dashboard, which can be accessed and viewed online.
+   
 ## Future Improvements
 
 Here are some potential areas for future improvements in the project:
 
-* Incorporate more features related to delivery partners, weather conditions, or traffic patterns to enhance prediction accuracy.
-* Conduct more comprehensive data analysis to identify additional patterns or correlations that can contribute to better predictions.
-* Fine-tune the model parameters to potentially improve performance.
+* Develop a real-time sentiment dashboard for stock market indexes such as Dow Jones and Nasdaq where user can select the index and corresponding information will be displayed.
+* Allow users to select specific indexes, including international ones like India, France, UK, and Japan.
+* As FinViz doesn't not provide frequent news updates for international stocks, an alternative news source needs to be identified.
