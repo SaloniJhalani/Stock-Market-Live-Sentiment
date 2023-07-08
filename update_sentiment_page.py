@@ -31,10 +31,6 @@ number_of_shares = tickers_dict.values()
 finwiz_url = 'https://finviz.com/quote.ashx?t='
 news_tables = {}
 
-##### Scrape the Date, Time and News Headlines Data
-finwiz_url = 'https://finviz.com/quote.ashx?t='
-news_tables = {}
-
 for ticker in tickers:
     url = finwiz_url + ticker
     req = Request(url=url,headers={'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:20.0) Gecko/20100101 Firefox/20.0'})
@@ -119,12 +115,6 @@ df = df.reset_index()
 
 
 # Generate the Treemap Plot
-# group data into sectors at the highest level, breaks it down into industry, and then ticker, specified in the 'path' parameter
-# the 'values' parameter uses the value of the column to determine the relative size of each box in the chart
-# the color of the chart follows the sentiment score
-# when the mouse is hovered over each box in the chart, the negative, neutral, positive and overall sentiment scores will all be shown
-# the color is red (#ff0000) for negative sentiment scores, black (#000000) for 0 sentiment score and green (#00FF00) for positive sentiment scores
-
 fig = px.treemap(df, path=[px.Constant("Sectors"), 'Sector', 'Industry', 'ticker'], values='Total Stock Value in Portfolio',
                   color='Sentiment Score', hover_data=['Price', 'Negative', 'Neutral', 'Positive', 'Sentiment Score'],
                   color_continuous_scale=['#FF0000', "#000000", '#00FF00'],
