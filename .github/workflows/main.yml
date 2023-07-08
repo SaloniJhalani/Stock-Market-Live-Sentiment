@@ -2,8 +2,7 @@
 name: Get Sentiment and update GitHub page
 
 on:
-  schedule:
-    [push]
+  [push]
     
 jobs:
   refresh_page:
