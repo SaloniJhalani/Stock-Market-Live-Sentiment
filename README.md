@@ -16,12 +16,12 @@
 
   
 ## Project Overview
-This project focuses on developing a food delivery time prediction model. The goal is to estimate the time it takes for food to be delivered to customers accurately. By accurately predicting delivery times, food delivery platforms can enhance customer experience, optimize delivery logistics, and improve overall operational efficiency.
+This project focuses on generating an interactive stock sentiment treemap for a portfolio of stocks, using Python. 
 
 ## Data Source
-The dataset used for this project can be obtained from [here](https://www.kaggle.com/datasets/gauravmalik26/food-delivery-dataset).
+This project involves scraping a real-time dataset of stock news, which is updated every 30 minutes, from FinViz[link](https://finviz.com), a well-known website for stock screening.
 
-It contains relevant information such as order details, location, city, delivery person information, weather conditions and actual delivery times.
+To gather additional information about the stocks, including the Last Closing Price, sector, and industry name, Python is used along with the yfinance library. This library provides the necessary tools and functionalities to retrieve stock data from various sources
 
 ## Website Link
 
