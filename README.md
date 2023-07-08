@@ -1,1 +1,1 @@
-# Sentiment-Analysis-for-Stock-Price-Prediction
+# Stock Market Sentiment 
