@@ -14,7 +14,9 @@
 
   
 ## Project Overview
-This project focuses on generating an interactive stock sentiment treemap for a portfolio of stocks, using Python. 
+Picture this: you're an ambitious investor or a passionate stock enthusiast, eagerly keeping an eye on the ever-changing world of stocks. You want to make informed decisions about your portfolio, but it can be overwhelming to sift through an avalanche of data and news articles. That's where our exciting project comes into play!
+
+This project focuses on generating an interactive stock sentiment treemap for a portfolio of stocks, helping you make informed decisions.
 
 ## Data Source
 This project involves scraping a real-time dataset of stock news, which is updated every 30 minutes, from [FinViz](https://finviz.com), a well-known website for stock screening.
