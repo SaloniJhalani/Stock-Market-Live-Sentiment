@@ -8,10 +8,8 @@
 - [Website Link](#website-link)
 - [Implementation Details](#implementation-details)
     - [Methods Used](#methods-used)
-    - [Technologies](#technologies)
     - [Python Packages Used](#python-packages-used)
 - [Steps Followed](#steps-followed)
-- [Results and Evaluation Criterion](#results-and-evaluation-criterion)
 - [Future Improvements](#future-improvements)
 
   
@@ -21,32 +19,25 @@ This project focuses on generating an interactive stock sentiment treemap for a 
 ## Data Source
 This project involves scraping a real-time dataset of stock news, which is updated every 30 minutes, from [FinViz](https://finviz.com), a well-known website for stock screening.
 
-To gather additional information about the stocks, including the Last Closing Price, sector, and industry name, Python is used along with the yfinance library. This library provides the necessary tools and functionalities to retrieve stock data from various sources
+To gather additional information about the stocks, including the Last Closing Price, sector, and industry name, Python is used along with the yfinance library. This library provides the necessary tools and functionalities to retrieve stock data from various sources.
 
 ## Website Link
 
-A web-based demonstration of the food delivery time prediction model can be accessed from this [link](https://food-delivery-time-prediction.streamlit.app).
+A web-based demonstration of the live stock market sentiment can be accessed from this [link](https://salonijhalani.github.io/live_sentiment.html).
 
 ## Implementation Details
 
 ### Methods Used
-* Machine Learning
-* Data Cleaning
-* Feature Engineering
-* Regression Algorithms
-
-### Technologies
-* Python
-* Jupyter
-* streamlit
+* Data Collection
+* Sentiment Analysis
+* Data Visualisation
 
 ### Python Packages Used
 * Pandas
-* NumPy
-* Scikit-learn
-* Matplotlib
-* Seaborn
-* xgboost
+* nltk
+* plotly
+* yfinance
+* BeautifulSoup
 
 ## Steps Followed
 
@@ -55,10 +46,6 @@ A web-based demonstration of the food delivery time prediction model can be acce
 3. Model Development: Utilized regression algorithms to train a food delivery time prediction model. Explored different models such as linear regression, decision trees, random forests, xgboost to identify the best-performing model.
 4. Model Evaluation: Evaluated the performance of the models using appropriate metrics such as mean squared error (MSE),root mean squared error (RMSE) and R2 score.
 5. Deployment: Deployed the food delivery time prediction model as a standalone application for real-time predictions.
-
-## Results and Evaluation Criterion
-
-Based on the evaluation results, the best-performing model was **XGBoost** with R2 score of **0.82**
 
 ## Future Improvements
 
