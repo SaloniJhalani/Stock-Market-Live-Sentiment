@@ -19,7 +19,7 @@
 This project focuses on generating an interactive stock sentiment treemap for a portfolio of stocks, using Python. 
 
 ## Data Source
-This project involves scraping a real-time dataset of stock news, which is updated every 30 minutes, from FinViz[link](https://finviz.com), a well-known website for stock screening.
+This project involves scraping a real-time dataset of stock news, which is updated every 30 minutes, from [FinViz](https://finviz.com), a well-known website for stock screening.
 
 To gather additional information about the stocks, including the Last Closing Price, sector, and industry name, Python is used along with the yfinance library. This library provides the necessary tools and functionalities to retrieve stock data from various sources
 
